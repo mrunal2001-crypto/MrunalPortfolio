@@ -5,7 +5,7 @@
     "build": "next build",
     "start": "next start",
     "serve": "next serve",
-    "vercel-build": "npm install --legacy-peer-deps && npm run build"
+     "vercel-build": "npm install --legacy-peer-deps && npm run build"
   },
   "dependencies": {
     "@mapbox/rehype-prism": "^0.8.0",
