@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+"use client"; // optional if using Next 13+ app directory
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import {routes} from "@/data/global";
+import { routes } from "@/data/global";
 import useDelayedRender from "use-delayed-render";
 
 export default function MobileNavbar() {
+  const [mounted, setMounted] = useState(false); // ensure client-only render
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { mounted: isMenuMounted, rendered: isMenuRendered } = useDelayedRender(
     isMenuOpen,
@@ -13,6 +15,16 @@ export default function MobileNavbar() {
       exitDelay: 300,
     }
   );
+
+  // only render on client
+  useEffect(() => {
+    setMounted(true);
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, []);
+
+  if (!mounted) return null;
 
   function toggleMenu() {
     if (isMenuOpen) {
@@ -24,25 +36,15 @@ export default function MobileNavbar() {
     }
   }
 
-  useEffect(() => {
-    return function cleanup() {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
   return (
     <nav>
       <div
-        className={`w-full justify-between flex items-center ${isMenuRendered && 'bg-bg'} p-5`}
+        className={`w-full justify-between flex items-center ${isMenuRendered ? "bg-bg" : ""} p-5`}
         style={{ zIndex: 101 }}
       >
         <li className="list-none font-bold text-lg">
           <Link href="/">
-            <img
-              className="mr-3"
-              src="/static/logos/logo_full.svg"
-              width="160"
-            />
+            <img className="mr-3" src="/static/logos/logo_full.svg" width={160} />
           </Link>
         </li>
         <button
@@ -55,30 +57,29 @@ export default function MobileNavbar() {
           <CrossIcon data-hide={!isMenuOpen} />
         </button>
       </div>
+
       {isMenuMounted && (
         <ul
-          className={`menu flex flex-col absolute bg-bg
-            ${isMenuRendered && "menuRendered"}`}
+          className={`menu flex flex-col absolute bg-bg ${isMenuRendered ? "menuRendered" : ""}`}
         >
-          {routes.map((item, index) => {
-            return (
-              <li
-                className="border-b border-gray-900 text-gray-100 text-sm font-semibold"
-                style={{ transitionDelay: `${150 + index * 25}ms` }}
-              >
-                <Link href={item.path}>
-                  <a className="flex w-auto pb-4">{item.title}</a>
-                </Link>
-              </li>
-            );
-          })}
+          {routes.map((item, index) => (
+            <li
+              key={index}
+              className="border-b border-gray-900 text-gray-100 text-sm font-semibold"
+              style={{ transitionDelay: `${150 + index * 25}ms` }}
+            >
+              <Link href={item.path}>
+                <a className="flex w-auto pb-4">{item.title}</a>
+              </Link>
+            </li>
+          ))}
         </ul>
       )}
     </nav>
   );
 }
 
-function MenuIcon(props) {
+function MenuIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       className="h-5 w-5 absolute text-gray-100"
@@ -88,25 +89,13 @@ function MenuIcon(props) {
       fill="none"
       {...props}
     >
-      <path
-        d="M2.5 7.5H17.5"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M2.5 12.5H17.5"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+      <path d="M2.5 7.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2.5 12.5H17.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function CrossIcon(props) {
+function CrossIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       className="h-5 w-5 absolute text-gray-100"
