@@ -84,18 +84,7 @@ export const footer: Footer = {
           icon: "/static/icons/linkedin-f.svg",
           leavesWebsite: true,
         },
-        // {
-        //   name: "Dribbble",
-        //   link: "https://dribbble.com/braydentw",
-        //   icon: "/static/icons/dribbble-f.svg",
-        //   leavesWebsite: true,
-        // },
-        // {
-        //   name: "IndieHackers",
-        //   link: "https://indiehackers.com/braydentw",
-        //   icon: "/static/icons/indiehackers-f.svg",
-        //   leavesWebsite: true,
-        // },
+     
         {
           name: "Email",
           link:"https://mail.google.com/mail/?view=cm&fs=1&to=mrunalforblockchain@gmail.com",
@@ -106,8 +95,8 @@ export const footer: Footer = {
     },
   ],
   support: {
-    buymeacoffee: "braydenw",
-    paypal: "braydentw",
+    buymeacoffee: "mrunal",
+    paypal: "mrunal",
     message: "I appreciate your support very much! 💙",
   },
 };
