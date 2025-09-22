@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { routes } from "@/data/global";
-import useDelayedRender from "use-delayed-render";
+// Import your custom hook instead
+import useDelayedRender from "../hooks/hooks/useDelayedRender";
 
 export default function MobileNavbar() {
   const [mounted, setMounted] = useState(false); // ensure client-only render
