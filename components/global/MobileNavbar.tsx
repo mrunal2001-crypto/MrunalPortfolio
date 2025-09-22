@@ -38,44 +38,7 @@ export default function MobileNavbar() {
   }
 
   return (
-    <nav>
-      <div
-        className={`w-full justify-between flex items-center ${isMenuRendered ? "bg-bg" : ""} p-5`}
-        style={{ zIndex: 101 }}
-      >
-        <li className="list-none font-bold text-lg">
-          {/* <Link href="/">
-          </Link> */}
-        </li>
-        <button
-          className="burger visible md:hidden"
-          aria-label="Toggle menu"
-          type="button"
-          onClick={toggleMenu}
-        >
-          <MenuIcon data-hide={isMenuOpen} />
-          <CrossIcon data-hide={!isMenuOpen} />
-        </button>
-      </div>
-
-      {isMenuMounted && (
-        <ul
-          className={`menu flex flex-col absolute bg-bg ${isMenuRendered ? "menuRendered" : ""}`}
-        >
-          {routes.map((item, index) => (
-            <li
-              key={index}
-              className="border-b border-gray-900 text-gray-100 text-sm font-semibold"
-              style={{ transitionDelay: `${150 + index * 25}ms` }}
-            >
-              <Link href={item.path}>
-                <a className="flex w-auto pb-4">{item.title}</a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
-    </nav>
+    <></>
   );
 }
 
