@@ -6,9 +6,13 @@ export const kebabCase = (str: string) =>
 
 export const kebabArray = (arr: any[]) => arr.map((item) => kebabCase(item));
 
-export const randomNumberText = (finalNum: string, setNumber) => {
+export const randomNumberText = (
+  finalNum: string,
+  setNumber: React.Dispatch<React.SetStateAction<string>>
+) => {
   let count = 0;
   let newNum = "";
+
   const interval = setInterval(() => {
     count++;
     for (let i = 0; i < finalNum.length; i++) {
@@ -16,9 +20,9 @@ export const randomNumberText = (finalNum: string, setNumber) => {
     }
     setNumber(newNum);
     newNum = "";
+
     if (count === 20) {
       clearInterval(interval);
-
       setNumber("404");
     }
   }, 80);

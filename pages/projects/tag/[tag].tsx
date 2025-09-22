@@ -1,50 +1,57 @@
 import Page from "components/utility/Page";
-
 import { GetStaticProps, GetStaticPaths } from "next";
-import { allKebabTags, allTags } from "@/data/content/projects";
+import { allKebabTags, allTags as allTagsData } from "@/data/content/projects";
 
 import projects from "@/data/content/projects";
 
 import { kebabCase, kebabArray } from "@/utils/utils";
 import Projects from "components/projects/Projects";
 import Heading from "components/projects/Heading";
-import More from "components/projects/More";
 import Link from "next/link";
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const allTags = [];
+  // Explicitly type allTags as string[]
+  const allTags: string[] = [];
   projects.forEach((project) =>
     project.tags.forEach((tag) => {
       allTags.push(tag);
     })
   );
+
   const uniqueAllTags = [...new Set(allTags)];
   const allTagsPaths = uniqueAllTags.map((path) => ({
     params: { tag: `${kebabCase(path)}` },
   }));
+
   return {
     paths: allTagsPaths,
     fallback: false,
   };
 };
 
-export const getStaticProps: GetStaticProps = async ({params}: {params: {tag: string}}) => {
-  const tag = params.tag;
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const tag = params?.tag as string;
   const filteredProjects = projects.filter((project) =>
     [...kebabArray(project.tags)].includes(tag)
   );
+
   return {
-    props: JSON.parse(
-      JSON.stringify({
-        filteredProjects,
-        tag: tag,
-      })
-    ),
+    props: {
+      filteredProjects,
+      tag,
+    },
   };
 };
 
-function PostPage({ filteredProjects, tag }) {
-  const capsTag = allTags[allKebabTags.indexOf(tag)];
+type PostPageProps = {
+  filteredProjects: typeof projects;
+  tag: string;
+};
+
+function PostPage({ filteredProjects, tag }: PostPageProps) {
+  // Use imported allTags to get the capitalized version
+  const capsTag = allTagsData[allKebabTags.indexOf(tag)] || tag;
+
   return (
     <Page
       currentPage="Projects"
@@ -61,9 +68,9 @@ function PostPage({ filteredProjects, tag }) {
           View All
         </div>
       </Link>
-      {/* <More /> */}
     </Page>
   );
 }
 
 export default PostPage;
+ 
